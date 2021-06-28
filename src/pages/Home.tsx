@@ -1,7 +1,10 @@
-import { useAuth } from '../hooks/useAuth';
-
 // Hook that makes the redirect
 import { useHistory } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
+
+import { useAuth } from '../hooks/useAuth';
+
+import { database } from '../services/firebase';
 
 // Importing the images
 import illustrationImg from '../assets/images/illustration.svg';
@@ -21,6 +24,9 @@ export function Home() {
     // Calling the auth hook
     const { user, signInWithGoogle } = useAuth();
 
+    // Creating a state
+    const [roomCode, setRoomCode] = useState('');
+
     // Creating the function that auth and redirects
     async function handleCreateRoom() {
         if (!user) {
@@ -28,6 +34,25 @@ export function Home() {
         }
 
         history.push('/rooms/new');
+    }
+
+    async function handleJoinRoom(event: FormEvent) {
+        event.preventDefault();
+
+        // Exit if room code is empty
+        if (roomCode.trim() === '') {
+            return;
+        }
+
+        // Get all the data from the specific room
+        const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+        if (!roomRef.exists()) {
+            alert('A sala não existe!');
+            return;
+        }
+
+        history.push(`rooms/${roomCode}`);
     }
 
     return (
@@ -50,10 +75,12 @@ export function Home() {
 
                     <div className="separator">ou entre em uma sala</div>
 
-                    <form>
+                    <form onSubmit={handleJoinRoom}>
                         <input
                             type="text"
                             placeholder="Digite o código da sala"
+                            onChange={event => setRoomCode(event.target.value)}
+                            value={roomCode}
                         />
                         <Button type="submit">
                             <img src={loginImg} alt="Entrar na sala" />
