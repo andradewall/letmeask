@@ -14,6 +14,7 @@ import loginImg from '../assets/images/log-in.svg';
 import { Button } from '../components/Button';
 
 import '../styles/auth.scss';
+import toast, { Toaster } from 'react-hot-toast';
 
 export function Home() {
 
@@ -47,7 +48,12 @@ export function Home() {
         const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
         if (!roomRef.exists()) {
-            alert('A sala não existe!');
+            toast.error('A sala não existe!');
+            return;
+        }
+
+        if (roomRef.val().endedAt) {
+            toast.error('Esta sala já foi encerrada.');
             return;
         }
 
@@ -56,7 +62,7 @@ export function Home() {
 
     return (
         <div id="page-auth">
-
+            <Toaster />
             <aside>
                 <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
                 <h1>Toda pergunta tem uma resposta</h1>

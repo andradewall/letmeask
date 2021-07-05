@@ -1,4 +1,7 @@
-import { useParams } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { useHistory, useParams } from 'react-router-dom';
+
+import { database } from '../services/firebase';
 
 import logoImg from '../assets/images/logo.svg';
 import deleteImg from '../assets/images/delete.svg';
@@ -6,20 +9,18 @@ import deleteImg from '../assets/images/delete.svg';
 import { Button } from '../components/Button';
 import { Question } from '../components/Question';
 import { RoomCode } from '../components/RoomCode';
-import { useAuth } from '../hooks/useAuth';
 import { useRoom } from '../hooks/useRoom';
 
 import '../styles/room.scss';
 import '../styles/popup.scss';
-import { database } from '../services/firebase';
-import toast, { Toaster } from 'react-hot-toast';
+
 
 type RoomParams = {
     id: string;
 }
 
 export function AdminRoom() {
-    const { user } = useAuth();
+    const history = useHistory();
     const params = useParams<RoomParams>();
     const roomId = params.id;
     const {questions, title} = useRoom(roomId);
@@ -60,6 +61,14 @@ export function AdminRoom() {
         await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
 
+    async function handleEndRoom() {
+        database.ref(`rooms/${roomId}`).update({
+            endedAt: new Date(),
+        });
+
+        history.push('/');
+    }
+
     return (
         <div id="page-room">
             <Toaster />
@@ -68,7 +77,10 @@ export function AdminRoom() {
                     <img src={logoImg} alt="Logo" />
                     <div>
                         <RoomCode code={roomId} />
-                        <Button isOutlined>Encerrar sala</Button>
+                        <Button
+                            isOutlined
+                            onClick={handleEndRoom}
+                        >Encerrar sala</Button>
                     </div>
                 </div>
             </header>
