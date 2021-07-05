@@ -1,0 +1,32 @@
+@import "_variables";
+
+.popup {
+    display: flex;
+    flex-direction: column;
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+    }
+
+    &__button {
+        border: 0;
+        margin: 8px;
+        background: transparent;
+        cursor: pointer;
+        color: $grey-color-2;
+
+        &:hover {
+            color: rgba($grey-color-2, 0.8);
+        }
+
+        &--danger {
+            color: $google-color;
+
+            &:hover {
+                color: rgba($google-color, 0.8);
+            }
+        }
+    }
+}
