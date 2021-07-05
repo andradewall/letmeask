@@ -27,4 +27,18 @@
         opacity: 0.6;
         cursor: not-allowed;
     }
+
+    &.outlined {
+        background: $white-color-1;
+        border: 1px solid $purple-color-1;
+        color: $purple-color-1;
+        transition: all 0.2s;
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: $purple-color-1;
+            color: $white-color-1;
+        }
+    }
 }

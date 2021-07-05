@@ -1,0 +1,71 @@
+@import "../../styles/_variables";
+
+.question {
+    background: $white-color-4;
+    border-radius: 8px;
+    box-shadow: $shadow-1;
+    padding: 24px;
+
+    & + .question {
+        margin-top: 8px;
+    }
+
+    p {
+        color: $black-color-1;
+    }
+
+    &-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 24px;
+
+        .user-info {
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+            }
+
+            span {
+                margin-left: 8px;
+                color: $grey-color-2;
+                font-weight: 500;
+                font-size: 14px;
+            }
+        }
+
+        button {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+
+            &.like-button {
+                display: flex;
+                align-items: flex-end;
+                gap: 8px;
+                color: $grey-color-2;
+                transition: all 0.5s;
+
+                &.liked {
+                    color: $purple-color-1;
+
+                    svg path {
+                        fill: $purple-color-1;
+                    }
+                }
+
+                &:hover {
+                    color: $purple-color-1;
+
+                    svg path {
+                        stroke: $purple-color-1;
+                    }
+                }
+            }
+        }
+    }
+}
